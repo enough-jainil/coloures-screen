@@ -16,7 +16,7 @@ export default function ProgressBar({
 
   useEffect(() => {
     let startTime: number;
-    let rafId: number;
+    let rafId: number | undefined;
 
     const animate = (timestamp: number) => {
       if (!startTime) startTime = timestamp;
