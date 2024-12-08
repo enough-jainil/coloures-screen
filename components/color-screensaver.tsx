@@ -173,11 +173,14 @@ export default function ColorScreensaver() {
       }}
     >
       <Card
-        className={`w-full max-w-md p-6 backdrop-blur-xl ${cardBgClass}`}
+        className={`w-full max-w-md p-6 backdrop-blur-xl bg-opacity-20 border border-opacity-30 shadow-lg`}
         style={{
-          backgroundColor: nextBgColor,
+          backgroundColor: `${nextBgColor}33`,
+          borderColor: nextBgColor,
           transition: "all 1s ease-in-out",
-          opacity: 0.9,
+          backdropFilter: "blur(12px)",
+          WebkitBackdropFilter: "blur(12px)",
+          boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.37)",
         }}
       >
         <div className="space-y-4 text-center">
