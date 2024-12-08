@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2, Pause, Play, Maximize, Minimize, Camera } from "lucide-react";
 import SlidingCounter from "./sliding-counter";
 import ProgressBar from "./progress-bar";
+import { loadRighteousFont } from "@/lib/loadFont";
 
 interface ColorResponse {
   name: {
@@ -54,18 +55,15 @@ export default function ColorScreensaver() {
   const changeColor = useCallback(async () => {
     if (!nextColor || !isPlaying) return;
 
-    // Set the next background color
-    setCurrentBgColor(color?.hex.value || "white");
+    // Update both current color and background colors simultaneously
+    setColor(nextColor);
+    setCurrentBgColor(nextColor.hex.value);
     setNextBgColor(nextColor.hex.value);
 
-    // Wait for the transition
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    // Update the current color and fetch next
-    setColor(nextColor);
+    // Fetch the next color immediately
     const newNextColor = await fetchRandomColor();
     setNextColor(newNextColor);
-  }, [nextColor, fetchRandomColor, isPlaying, color?.hex.value]);
+  }, [nextColor, fetchRandomColor, isPlaying]);
 
   useEffect(() => {
     const initializeColors = async () => {
@@ -114,11 +112,14 @@ export default function ColorScreensaver() {
     }
   };
 
-  const takeScreenshot = () => {
+  const takeScreenshot = async () => {
     if (!color) return;
 
+    // Load the font before creating the canvas
+    await loadRighteousFont();
+
     const canvas = document.createElement("canvas");
-    canvas.width = 1920; // You can adjust this for different resolutions
+    canvas.width = 1920;
     canvas.height = 1080;
 
     const ctx = canvas.getContext("2d");
@@ -127,6 +128,9 @@ export default function ColorScreensaver() {
     // Fill the canvas with the current color
     ctx.fillStyle = color.hex.value;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Wait for font to be available
+    await document.fonts.ready;
 
     // Add color information text
     ctx.fillStyle = isLightColor(color) ? "#000000" : "#FFFFFF";
@@ -247,6 +251,7 @@ export default function ColorScreensaver() {
           </div>
         </div>
         <ProgressBar
+          key={color.hex.value}
           duration={5000}
           isPlaying={isPlaying}
           textColorClass={textColorClass}
