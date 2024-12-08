@@ -16,25 +16,6 @@ export default function SlidingCounter({
     setDisplayValue(value);
   }, [value]);
 
-  const motionProps: HTMLMotionProps<"span"> = {
-    initial: { y: 20, opacity: 0 },
-    animate: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.4,
-        ease: [0.34, 1.56, 0.64, 1], // Custom spring-like easing
-      },
-    },
-    exit: {
-      y: -20,
-      opacity: 0,
-      transition: {
-        duration: 0.3,
-      },
-    },
-  };
-
   return (
     <div className={`relative overflow-hidden ${className}`}>
       <div className="flex">
@@ -47,18 +28,21 @@ export default function SlidingCounter({
             <AnimatePresence mode="popLayout">
               <motion.span
                 key={char + index}
-                {...motionProps}
+                initial={{ y: 20, opacity: 0 }}
                 animate={{
-                  ...motionProps.animate,
+                  y: 0,
+                  opacity: 1,
                   transition: {
-                    ...motionProps.animate?.transition,
+                    duration: 0.4,
                     delay: index * 0.05,
+                    ease: [0.34, 1.56, 0.64, 1], // Custom spring-like easing
                   },
                 }}
                 exit={{
-                  ...motionProps.exit,
+                  y: -20,
+                  opacity: 0,
                   transition: {
-                    ...motionProps.exit?.transition,
+                    duration: 0.3,
                     delay: index * 0.03,
                   },
                 }}
