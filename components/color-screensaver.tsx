@@ -10,21 +10,21 @@ import { loadRighteousFont } from "@/lib/loadFont";
 import { ColorHistoryDrawer } from "./color-history-drawer";
 import type { ColorResponse } from "@/lib/types";
 
-interface ColorResponse {
-  name: {
-    value: string;
-  };
-  hex: {
-    value: string;
-    clean: string;
-  };
-  rgb: {
-    value: string;
-    r: number;
-    g: number;
-    b: number;
-  };
-}
+// interface ColorResponse {
+//   name: {
+//     value: string;
+//   };
+//   hex: {
+//     value: string;
+//     clean: string;
+//   };
+//   rgb: {
+//     value: string;
+//     r: number;
+//     g: number;
+//     b: number;
+//   };
+// }
 
 function isLightColor(color: ColorResponse): boolean {
   const { r, g, b } = color.rgb;
