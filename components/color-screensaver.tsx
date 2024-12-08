@@ -4,6 +4,8 @@ import { useEffect, useState, useCallback } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Loader2, Pause, Play, Maximize, Minimize, Camera } from "lucide-react";
+import SlidingCounter from "./sliding-counter";
+import ProgressBar from "./progress-bar";
 
 interface ColorResponse {
   name: {
@@ -173,7 +175,7 @@ export default function ColorScreensaver() {
       }}
     >
       <Card
-        className={`w-full max-w-md p-6 backdrop-blur-xl bg-opacity-20 border border-opacity-30 shadow-lg`}
+        className={`w-full max-w-md mx-4 p-4 sm:p-6 backdrop-blur-xl bg-opacity-20 border border-opacity-30 shadow-lg relative overflow-hidden`}
         style={{
           backgroundColor: `${nextBgColor}33`,
           borderColor: nextBgColor,
@@ -183,55 +185,72 @@ export default function ColorScreensaver() {
           boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.37)",
         }}
       >
-        <div className="space-y-4 text-center">
-          <h1 className={`text-4xl font-bold tracking-tight ${textColorClass}`}>
-            {color.name.value}
+        <div className="space-y-3 sm:space-y-4 text-center">
+          <h1
+            className={`text-2xl sm:text-4xl font-bold tracking-tight ${textColorClass}`}
+          >
+            <SlidingCounter value={color.name.value} className="inline-block" />
           </h1>
-          <div className={`grid grid-cols-2 gap-4 ${textColorClass}`}>
+          <div className={`grid grid-cols-2 gap-2 sm:gap-4 ${textColorClass}`}>
             <div>
-              <p className="text-sm font-medium">HEX</p>
-              <p className="font-mono">{color.hex.value}</p>
+              <p className="text-xs sm:text-sm font-medium">HEX</p>
+              <p className="text-sm sm:text-base font-mono">
+                <SlidingCounter
+                  value={color.hex.value}
+                  className="inline-block"
+                />
+              </p>
             </div>
             <div>
-              <p className="text-sm font-medium">RGB</p>
-              <p className="font-mono">{color.rgb.value}</p>
+              <p className="text-xs sm:text-sm font-medium">RGB</p>
+              <p className="text-sm sm:text-base font-mono">
+                <SlidingCounter
+                  value={color.rgb.value}
+                  className="inline-block"
+                />
+              </p>
             </div>
           </div>
-          <div className="flex justify-center space-x-2">
+          <div className="flex flex-wrap justify-center gap-2">
             <Button
               onClick={togglePlayPause}
-              className={buttonColorClass}
+              className={`${buttonColorClass} text-xs sm:text-sm`}
               aria-label={isPlaying ? "Pause screensaver" : "Play screensaver"}
             >
               {isPlaying ? (
-                <Pause className="mr-2 h-4 w-4" />
+                <Pause className="h-3 w-3 sm:h-4 sm:w-4" />
               ) : (
-                <Play className="mr-2 h-4 w-4" />
+                <Play className="h-3 w-3 sm:h-4 sm:w-4" />
               )}
               {isPlaying ? "Pause" : "Play"}
             </Button>
             <Button
               onClick={toggleFullscreen}
-              className={buttonColorClass}
+              className={`${buttonColorClass} text-xs sm:text-sm`}
               aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
             >
               {isFullscreen ? (
-                <Minimize className="mr-2 h-4 w-4" />
+                <Minimize className="h-3 w-3 sm:h-4 sm:w-4" />
               ) : (
-                <Maximize className="mr-2 h-4 w-4" />
+                <Maximize className="h-3 w-3 sm:h-4 sm:w-4" />
               )}
               {isFullscreen ? "Exit" : "Fullscreen"}
             </Button>
             <Button
               onClick={takeScreenshot}
-              className={buttonColorClass}
+              className={`${buttonColorClass} text-xs sm:text-sm`}
               aria-label="Take screenshot"
             >
-              <Camera className="mr-2 h-4 w-4" />
+              <Camera className="h-3 w-3 sm:h-4 sm:w-4" />
               Screenshot
             </Button>
           </div>
         </div>
+        <ProgressBar
+          duration={5000}
+          isPlaying={isPlaying}
+          textColorClass={textColorClass}
+        />
       </Card>
     </main>
   );
