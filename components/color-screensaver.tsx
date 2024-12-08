@@ -9,7 +9,6 @@ import SlidingCounter from "./sliding-counter";
 import { loadRighteousFont } from "@/lib/loadFont";
 import { ColorHistoryDrawer } from "./color-history-drawer";
 import type { ColorResponse } from "@/lib/types";
-import { Progress } from "@/components/ui/progress";
 
 // interface ColorResponse {
 //   name: {
