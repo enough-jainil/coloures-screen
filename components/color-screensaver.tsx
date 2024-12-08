@@ -7,6 +7,8 @@ import { Loader2, Pause, Play, Maximize, Minimize, Camera } from "lucide-react";
 import SlidingCounter from "./sliding-counter";
 import ProgressBar from "./progress-bar";
 import { loadRighteousFont } from "@/lib/loadFont";
+import { ColorHistoryDrawer } from "./color-history-drawer";
+import type { ColorResponse } from "@/lib/types";
 
 interface ColorResponse {
   name: {
@@ -39,6 +41,7 @@ export default function ColorScreensaver() {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [currentBgColor, setCurrentBgColor] = useState<string>("white");
   const [nextBgColor, setNextBgColor] = useState<string>("white");
+  const [colorHistory, setColorHistory] = useState<ColorResponse[]>([]);
 
   const fetchRandomColor = useCallback(async () => {
     const r = Math.floor(Math.random() * 255);
@@ -63,6 +66,11 @@ export default function ColorScreensaver() {
     // Fetch the next color immediately
     const newNextColor = await fetchRandomColor();
     setNextColor(newNextColor);
+
+    setColorHistory((prev) => {
+      const newHistory = [nextColor, ...prev];
+      return newHistory.slice(0, 20); // Keep last 20 colors
+    });
   }, [nextColor, fetchRandomColor, isPlaying]);
 
   useEffect(() => {
@@ -153,6 +161,13 @@ export default function ColorScreensaver() {
     link.download = `color-${color.hex.clean}.png`;
     link.href = canvas.toDataURL("image/png");
     link.click();
+  };
+
+  const handleColorSelect = (selectedColor: ColorResponse) => {
+    setColor(selectedColor);
+    setCurrentBgColor(selectedColor.hex.value);
+    setNextBgColor(selectedColor.hex.value);
+    setIsPlaying(false);
   };
 
   if (loading || !color) {
@@ -248,6 +263,11 @@ export default function ColorScreensaver() {
               <Camera className="h-3 w-3 sm:h-4 sm:w-4" />
               Screenshot
             </Button>
+            <ColorHistoryDrawer
+              colorHistory={colorHistory}
+              onColorSelect={handleColorSelect}
+              buttonColorClass={buttonColorClass}
+            />
           </div>
         </div>
         <ProgressBar
