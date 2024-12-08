@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Loader2, Pause, Play, Maximize, Minimize, Camera } from "lucide-react";
 import SlidingCounter from "./sliding-counter";
-import ProgressBar from "./progress-bar";
+// import ProgressBar from "./progress-bar";
 import { loadRighteousFont } from "@/lib/loadFont";
 import { ColorHistoryDrawer } from "./color-history-drawer";
 import type { ColorResponse } from "@/lib/types";
@@ -286,12 +286,12 @@ export default function ColorScreensaver() {
             />
           </div>
         </div>
-        <ProgressBar
+        {/* <ProgressBar
           key={color.hex.value}
           duration={5000}
           isPlaying={isPlaying}
           textColorClass={textColorClass}
-        />
+        /> */}
       </Card>
     </main>
   );
