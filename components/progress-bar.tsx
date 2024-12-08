@@ -55,6 +55,7 @@ export default function ProgressBar({
   return (
     <>
       <motion.div
+        as="div"
         initial={false}
         style={{ width: "8px" }}
         animate={{ opacity: 1 }}
@@ -62,6 +63,7 @@ export default function ProgressBar({
       />
       <div className="absolute bottom-0 left-0 w-full h-[2px] overflow-hidden">
         <motion.div
+          as="div"
           initial={{ width: "0%" }}
           animate={controls}
           className={`h-full bg-current ${textColorClass}`}
@@ -69,6 +71,7 @@ export default function ProgressBar({
         />
       </div>
       <motion.div
+        as="div"
         initial={false}
         style={{ width: "8px" }}
         animate={{ opacity: 1 }}
