@@ -7,8 +7,6 @@ interface ProgressBarProps {
   textColorClass: string;
 }
 
-type MotionDivProps = HTMLMotionProps<"div">;
-
 export default function ProgressBar({
   duration,
   isPlaying,
@@ -54,15 +52,12 @@ export default function ProgressBar({
     };
   }, [isPlaying, duration, controls]);
 
-  const sharedMotionProps: MotionDivProps = {
-    initial: false,
-    style: { width: "8px" },
-  };
-
   return (
     <>
       <motion.div
-        {...sharedMotionProps}
+        initial={false}
+        style={{ width: "8px" }}
+        animate={{ opacity: 1 }}
         className={`absolute bottom-0 left-0 h-[2px] rounded-bl-xl bg-current ${textColorClass}`}
       />
       <div className="absolute bottom-0 left-0 w-full h-[2px] overflow-hidden">
@@ -74,7 +69,9 @@ export default function ProgressBar({
         />
       </div>
       <motion.div
-        {...sharedMotionProps}
+        initial={false}
+        style={{ width: "8px" }}
+        animate={{ opacity: 1 }}
         className={`absolute bottom-0 right-0 h-[2px] rounded-br-xl bg-current ${textColorClass}`}
       />
     </>
