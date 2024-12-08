@@ -1,4 +1,4 @@
-import { motion, useAnimation } from "framer-motion";
+import { motion, useAnimation, type HTMLMotionProps } from "framer-motion";
 import { useEffect } from "react";
 
 interface ProgressBarProps {
@@ -6,6 +6,8 @@ interface ProgressBarProps {
   isPlaying: boolean;
   textColorClass: string;
 }
+
+type MotionDivProps = HTMLMotionProps<"div">;
 
 export default function ProgressBar({
   duration,
@@ -52,12 +54,16 @@ export default function ProgressBar({
     };
   }, [isPlaying, duration, controls]);
 
+  const sharedMotionProps: MotionDivProps = {
+    initial: false,
+    style: { width: "8px" },
+  };
+
   return (
     <>
       <motion.div
-        initial={false}
+        {...sharedMotionProps}
         className={`absolute bottom-0 left-0 h-[2px] rounded-bl-xl bg-current ${textColorClass}`}
-        style={{ width: "8px" }}
       />
       <div className="absolute bottom-0 left-0 w-full h-[2px] overflow-hidden">
         <motion.div
@@ -68,9 +74,8 @@ export default function ProgressBar({
         />
       </div>
       <motion.div
-        initial={false}
+        {...sharedMotionProps}
         className={`absolute bottom-0 right-0 h-[2px] rounded-br-xl bg-current ${textColorClass}`}
-        style={{ width: "8px" }}
       />
     </>
   );
