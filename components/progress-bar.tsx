@@ -1,5 +1,5 @@
 import { motion, useAnimation } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 interface ProgressBarProps {
   duration: number;
@@ -13,7 +13,6 @@ export default function ProgressBar({
   textColorClass,
 }: ProgressBarProps) {
   const controls = useAnimation();
-  const animationRef = useRef<number>();
 
   useEffect(() => {
     let startTime: number;

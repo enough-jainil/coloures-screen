@@ -44,10 +44,8 @@ export default function ColorScreensaver() {
   const [color, setColor] = useState<ColorResponse | null>(null);
   const [nextColor, setNextColor] = useState<ColorResponse | null>(null);
   const [loading, setLoading] = useState(true);
-  const [fading, setFading] = useState(false);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [currentBgColor, setCurrentBgColor] = useState<string>("white");
   const [nextBgColor, setNextBgColor] = useState<string>("white");
   const [colorHistory, setColorHistory] = useState<ColorResponse[]>([]);
 
@@ -68,7 +66,6 @@ export default function ColorScreensaver() {
 
     // Update both current color and background colors simultaneously
     setColor(nextColor);
-    setCurrentBgColor(nextColor.hex.value);
     setNextBgColor(nextColor.hex.value);
 
     // Fetch the next color immediately
@@ -87,7 +84,6 @@ export default function ColorScreensaver() {
       const initialNextColor = await fetchRandomColor();
       setColor(initialColor);
       setNextColor(initialNextColor);
-      setCurrentBgColor(initialColor.hex.value);
       setNextBgColor(initialColor.hex.value);
       setLoading(false);
     };
@@ -173,7 +169,6 @@ export default function ColorScreensaver() {
 
   const handleColorSelect = (selectedColor: ColorResponse) => {
     setColor(selectedColor);
-    setCurrentBgColor(selectedColor.hex.value);
     setNextBgColor(selectedColor.hex.value);
     setIsPlaying(false);
   };
@@ -188,7 +183,6 @@ export default function ColorScreensaver() {
 
   const isLight = isLightColor(color);
   const textColorClass = isLight ? "text-gray-900" : "text-white";
-  const cardBgClass = isLight ? "backdrop-blur-xl" : "backdrop-blur-xl";
   const buttonColorClass = isLight
     ? "bg-gray-900 text-white hover:bg-gray-700"
     : "bg-white text-gray-900 hover:bg-gray-200";
