@@ -201,7 +201,9 @@ export default function ColorScreensaver() {
           transition: "all 1s ease-in-out",
           backdropFilter: "blur(12px)",
           WebkitBackdropFilter: "blur(12px)",
-          boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.37)",
+          boxShadow: `0 8px 32px 0 ${
+            isLight ? "rgba(0, 0, 0, 0.2)" : "rgba(255, 255, 255, 0.2)"
+          }`,
         }}
       >
         <div className="space-y-3 sm:space-y-4 text-center">
