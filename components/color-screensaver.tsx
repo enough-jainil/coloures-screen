@@ -32,6 +32,14 @@ function isLightColor(color: ColorResponse): boolean {
   return brightness > 128;
 }
 
+const copyToClipboard = async (text: string) => {
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch (err) {
+    console.error("Failed to copy text: ", err);
+  }
+};
+
 export default function ColorScreensaver() {
   const [color, setColor] = useState<ColorResponse | null>(null);
   const [nextColor, setNextColor] = useState<ColorResponse | null>(null);
@@ -213,18 +221,30 @@ export default function ColorScreensaver() {
             <SlidingCounter value={color.name.value} className="inline-block" />
           </h1>
           <div className={`grid grid-cols-2 gap-2 sm:gap-4 ${textColorClass}`}>
-            <div>
+            <div
+              onClick={() => copyToClipboard(color.hex.value)}
+              className="cursor-pointer hover:opacity-80 transition-opacity"
+              role="button"
+              tabIndex={0}
+              aria-label="Copy HEX value"
+            >
               <p className="text-xs sm:text-sm font-medium">HEX</p>
-              <p className="text-sm sm:text-base font-mono">
+              <p className="text-sm sm:text-base font-mono group flex items-center justify-center gap-1">
                 <SlidingCounter
                   value={color.hex.value}
                   className="inline-block"
                 />
               </p>
             </div>
-            <div>
+            <div
+              onClick={() => copyToClipboard(color.rgb.value)}
+              className="cursor-pointer hover:opacity-80 transition-opacity"
+              role="button"
+              tabIndex={0}
+              aria-label="Copy RGB value"
+            >
               <p className="text-xs sm:text-sm font-medium">RGB</p>
-              <p className="text-sm sm:text-base font-mono">
+              <p className="text-sm sm:text-base font-mono group flex items-center justify-center gap-1">
                 <SlidingCounter
                   value={color.rgb.value}
                   className="inline-block"
