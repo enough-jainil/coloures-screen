@@ -1,5 +1,5 @@
-import { motion, useAnimation } from "framer-motion";
-import { useEffect } from "react";
+import { Progress } from "@/components/ui/progress";
+import { useEffect, useState } from "react";
 
 interface ProgressBarProps {
   duration: number;
@@ -12,7 +12,7 @@ export default function ProgressBar({
   isPlaying,
   textColorClass,
 }: ProgressBarProps) {
-  const controls = useAnimation();
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     let startTime: number;
@@ -20,12 +20,10 @@ export default function ProgressBar({
 
     const animate = (timestamp: number) => {
       if (!startTime) startTime = timestamp;
-      const progress = timestamp - startTime;
-      const percentage = Math.min((progress / duration) * 100, 100);
+      const elapsed = timestamp - startTime;
+      const percentage = Math.min((elapsed / duration) * 100, 100);
 
-      controls.set({
-        width: `${percentage}%`,
-      });
+      setProgress(percentage);
 
       if (percentage < 100 && isPlaying) {
         rafId = requestAnimationFrame(animate);
@@ -33,7 +31,8 @@ export default function ProgressBar({
     };
 
     const startAnimation = () => {
-      controls.set({ width: "0%" });
+      setProgress(0);
+      startTime = 0;
       rafId = requestAnimationFrame(animate);
     };
 
@@ -50,33 +49,12 @@ export default function ProgressBar({
         cancelAnimationFrame(rafId);
       }
     };
-  }, [isPlaying, duration, controls]);
+  }, [isPlaying, duration]);
 
   return (
-    <>
-      <motion.div
-        as="div"
-        initial={false}
-        style={{ width: "8px" }}
-        animate={{ opacity: 1 }}
-        className={`absolute bottom-0 left-0 h-[2px] rounded-bl-xl bg-current ${textColorClass}`}
-      />
-      <div className="absolute bottom-0 left-0 w-full h-[2px] overflow-hidden">
-        <motion.div
-          as="div"
-          initial={{ width: "0%" }}
-          animate={controls}
-          className={`h-full bg-current ${textColorClass}`}
-          style={{ originX: 0 }}
-        />
-      </div>
-      <motion.div
-        as="div"
-        initial={false}
-        style={{ width: "8px" }}
-        animate={{ opacity: 1 }}
-        className={`absolute bottom-0 right-0 h-[2px] rounded-br-xl bg-current ${textColorClass}`}
-      />
-    </>
+    <Progress
+      value={progress}
+      className={`absolute bottom-0 left-0 right-0 h-[2px] bg-current/20 ${textColorClass}`}
+    />
   );
 }
